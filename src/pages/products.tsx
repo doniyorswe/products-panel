@@ -1,7 +1,8 @@
-import { Pagination, Table, type TableColumnsType } from "antd";
+import { Pagination, Table } from "antd";
 import type { ListResp, Product } from "../types";
 import { useEffect, useState } from "react";
 import http from "../services/http";
+import { useProductCols } from "./use-cols";
 
 export default function ProductsPage() {
     const [page, setPage] = useState(1)
@@ -26,68 +27,13 @@ export default function ProductsPage() {
         return () => controller.abort();
     }, [page, size]);
 
-    const columns: TableColumnsType<Product> = [
-        {
-            title: 'Product',
-            dataIndex: 'productName',
-            key: 'productName',
-        },
-        {
-            title: 'SKU',
-            dataIndex: 'sku',
-            key: 'sku',
-        },
-        {
-            title: 'Barcode',
-            dataIndex: 'barcode',
-            key: 'barcode',
-        },
-        {
-            title: 'Brand',
-            dataIndex: 'supplier',
-            key: 'supplier',
-        },
-        {
-            title: 'Unit',
-            dataIndex: 'unit',
-            key: 'unit',
-        },
-        {
-            title: 'Price (UZS)',
-            key: 'priceUzs',
-            render: (_, record) =>
-                record.stocks?.[0]?.sellPrice?.UZS
-                    ? record.stocks[0].sellPrice.UZS.toLocaleString()
-                    : '-',
-        },
-        {
-            title: 'Price (USD)',
-            key: 'priceUsd',
-            render: (_, record) =>
-                record.stocks?.[0]?.sellPrice?.USD
-                    ? `$${record.stocks[0].sellPrice.USD}`
-                    : '-',
-        },
-        {
-            title: 'Stock',
-            key: 'stock',
-            render: (_, record) =>
-                record.stocks?.[0]?.count ?? 0,
-        },
-        {
-            title: 'Last updated',
-            dataIndex: 'lastUpdateTime',
-            key: 'lastUpdateTime',
-        },
-    ];
-
     return (
         <div className="flex flex-col gap-3">
             <h3 className="text-lg">Products</h3>
             <Table
                 loading={isLoading}
                 dataSource={data?.items}
-                columns={columns}
+                columns={useProductCols()}
                 rowKey="id"
                 pagination={false}
             />

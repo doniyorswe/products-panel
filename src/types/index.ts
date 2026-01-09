@@ -23,7 +23,7 @@ export interface Product {
     name: string
     technicalCardId: null | number
     writeOffMethod: number
-    countInBox: number
+    countInBox: number | null
     zone: number
     unit: string
     properties: Property[]
