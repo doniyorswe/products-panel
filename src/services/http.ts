@@ -12,17 +12,7 @@ http.interceptors.request.use(
         if (token) {
             conf.headers.Authorization = `Bearer ${token}`
         }
-
-        const subdomain = conf.headers["X-Subdomain"]
-        console.log(subdomain);
         
-
-        if (subdomain) {
-            conf.baseURL = `https://${subdomain}.ox-sys.com`
-            delete conf.headers["X-Subdomain"]
-        }
-
-        // conf.headers["Content-Type"] = 'application/json'
         conf.headers.Accept = 'application/json'
 
         return conf
